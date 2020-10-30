@@ -1,0 +1,4 @@
+.ztree {margin-top: 10px;padding-left:10px;border: 1px solid #617775;background: #f0f6e4;width:100%;height:43vh;overflow-y:scroll;overflow-x:auto;}
+.ztree *{list-style: circle;font-size: 15px;}
+.ztree li{ margin:5px;}
+.ztree li span.button {width: 20px;}

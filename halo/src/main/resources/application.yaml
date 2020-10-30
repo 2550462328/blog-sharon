@@ -1,0 +1,59 @@
+server:
+  port: 8080
+  use-forward-headers: true
+  undertow:
+    io-threads: 2
+    worker-threads: 36
+    buffer-size: 1024
+    directBuffers: true
+  servlet:
+    session:
+      timeout: 86400s
+spring:
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      username: root
+      password: root
+  h2:
+    console:
+      settings:
+        web-allow-others: true
+      path: /h2-console
+      enabled: true
+  jpa:
+      ddl-auto: update
+#      show-sql: true
+  freemarker:
+    # 是否允许HttpServletRequest属性覆盖(隐藏)控制器生成的同名模型属性。
+    allow-request-override: false
+    # 关闭缓存，及时刷新，上线生产环境需要修改为true
+    cache: false
+    # 设定ftl文件路径
+    template-loader-path: classpath:/templates
+    # 是否检查ftl文件路径
+    check-template-location: true
+    charset: utf-8
+    content-type: text/html
+    # 是否应在与模板合并之前将所有请求属性添加到模型中。
+    expose-request-attributes: false
+    # 是否应在与模板合并之前将所有session属性添加到模型中。
+    expose-session-attributes: false
+    # 是否以“springMacroRequestContext”的名称公开RequestContext供Spring的macro库使用。
+    expose-spring-macro-helpers: true
+    suffix: .ftl
+    settings:
+      auto_import: /spring.ftl as spring
+      # 检查模板更新时间间隔，默认5s
+      template_update_delay: 0
+      number_format: 0
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  # 多语言资源文件路径
+  messages:
+    basename: i18n/messages
+
