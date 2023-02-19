@@ -44,40 +44,49 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(value = "select count(1) from halo_posts_categories where cate_id=:cateId", nativeQuery = true)
     Long getCategoryPostCount(@Param("cateId") Long cateId);
 
+    @Query(value = "SELECT cate_id FROM( SELECT @r AS _ids, ( SELECT @r \\:= GROUP_CONCAT( cate_id) FROM halo_category WHERE FIND_IN_SET( cate_pid, @r ) ) AS subIds FROM ( SELECT @r \\:= :pId ) vars,halo_category WHERE @r IS NOT NULL ) sub, halo_category WHERE FIND_IN_SET( halo_category.cate_id, sub._ids)", nativeQuery = true)
+    List<Long> findCateIdByCatePid(@Param("pId") Long pId);
+
+    @Query(value = "select count(*) from halo_posts_categories hpc inner join halo_post hp on hpc.post_id = hp.post_id where hpc.cate_id in (:cateIds) and hp.post_status = 0", nativeQuery = true)
+    int countSubPostsByCateIds(List<Long> cateIds);
+
     /**
      * 根据父节点id查找子类
-     * @author ZhangHui
-     * @date 2019/12/5
+     *
      * @param cateId
      * @return java.util.List<cc.ryanc.halo.model.domain.Category>
+     * @author ZhangHui
+     * @date 2019/12/5
      */
     List<Category> findAllByCatePid(long cateId);
 
     /**
      * 查找节点cateId下的直接子节点的个数
-     * @author ZhangHui
-     * @date 2019/12/9
+     *
      * @param cateId
      * @return int
+     * @author ZhangHui
+     * @date 2019/12/9
      */
-    @Query(value="select count(*) from halo_category where cate_pid=:cateId", nativeQuery = true)
+    @Query(value = "select count(*) from halo_category where cate_pid=:cateId", nativeQuery = true)
     int countChildCates(@Param("cateId") long cateId);
 
     /**
      * 修改原cateId下的直接子节点
-     * @author ZhangHui
-     * @date 2019/12/9
+     *
      * @param cateId
      * @return void
+     * @author ZhangHui
+     * @date 2019/12/9
      */
     @Modifying
-    @Query(value="update halo_category set cate_pid = 1 where cate_pid=:cateId", nativeQuery = true)
+    @Query(value = "update halo_category set cate_pid = 1 where cate_pid=:cateId", nativeQuery = true)
     void updateAfterRemove(@Param("cateId") long cateId);
 
     @Modifying
     @Query(value = "delete from halo_posts_categories where cate_id=:cateId", nativeQuery = true)
-    void deleteReferPost(@Param("cateId")long cateId);
+    void deleteReferPost(@Param("cateId") long cateId);
 
     @Query(value = "select post_id from halo_posts_categories where cate_id=:cateId", nativeQuery = true)
-    long[] findReferPost(@Param("cateId")long cateId);
+    long[] findReferPost(@Param("cateId") long cateId);
 }

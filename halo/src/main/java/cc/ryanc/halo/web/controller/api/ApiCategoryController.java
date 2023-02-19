@@ -1,4 +1,5 @@
 package cc.ryanc.halo.web.controller.api;
+
 import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
 import cc.ryanc.halo.model.dto.HaloConst;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -41,13 +43,12 @@ public class ApiCategoryController {
     private PostService postService;
 
 
-
     /**
      * 获取所有分类
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",
@@ -66,32 +67,47 @@ public class ApiCategoryController {
      *
      * @return JsonResult
      */
-    @GetMapping
-    public JsonResult categories() {
-        List<JSONObject> list=new ArrayList<>();
-        List<Category> categories = categoryService.findAll();
-        for(Category i:categories){
-            JSONObject info=new JSONObject();
-            info.put("cateId",i.getCateId());
-            info.put("count",i.getPosts().size());
-            info.put("cateName",i.getCateName());
-            info.put("cateUrl",i.getCateDesc());
-            info.put("categories",i.getCateDesc());
-            list.add(info);
-
+    @GetMapping("/list/{pId}/{pageNo}")
+    public JsonResult categories(@PathVariable("pId") Long pId,@PathVariable("pageNo") Integer pageNo) {
+        if (pId == null) {
+            pId = 0L;
         }
-        return new JsonResult(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(), list);
+        Sort sort = new Sort(Sort.Direction.DESC, "post_date");
+        //默认显示10条
+        int size = 10;
+        //尝试加载设置选项，用于设置显示条数
+        if (StrUtil.isNotBlank(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()))) {
+            size = Integer.parseInt(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()));
+        }
+        //所有文章数据，分页
+        Pageable pageable = PageRequest.of(pageNo -1, size, sort);
 
-
-
+        List<JSONObject> list = new ArrayList<>();
+        List<Category> categories = categoryService.findAllByCatePid(pId);
+        for (Category i : categories) {
+            List<Long> subCateIds = categoryService.findCateIdByCatePid(i.getCateId());
+            JSONObject info = new JSONObject();
+            info.put("cateId", i.getCateId());
+            info.put("count", categoryService.countSubPostsByCateIds(subCateIds));
+            info.put("cateName", i.getCateName());
+            info.put("hasSub", i.getHasChild());
+            info.put("cateUrl", i.getCateUrl());
+            info.put("cateIcon", i.getCateIcon());
+            info.put("posts", i.getPosts());
+            info.put("categories", i.getCateDesc());
+            list.add(info);
+        }
+        Page<Map<String,Object>> posts = postService.findPostsByCateId(pageable, pId);
+        JSONObject result = new JSONObject().put("posts", posts).put("result", list);
+        return new JsonResult(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(), result);
     }
 
     /**
      * 获取单个分类的信息
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",
@@ -120,6 +136,7 @@ public class ApiCategoryController {
 
     /**
      * 根据分类目录查询所有文章 分页
+     *
      * @param cateUrl 分类目录路径
      * @param page    页码
      * @return String
@@ -137,8 +154,8 @@ public class ApiCategoryController {
             }
             Pageable pageable = PageRequest.of(page - 1, size, sort);
             Page<Post> posts = postService.findPostByCategories(category, pageable);
-            return new JsonResult(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(),posts);
-        }else{
+            return new JsonResult(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(), posts);
+        } else {
             return new JsonResult(ResponseStatusEnum.NOTFOUND.getCode(), ResponseStatusEnum.NOTFOUND.getMsg());
         }
     }

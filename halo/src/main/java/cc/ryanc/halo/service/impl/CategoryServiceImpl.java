@@ -2,6 +2,7 @@ package cc.ryanc.halo.service.impl;
 
 import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.repository.CategoryRepository;
+import cc.ryanc.halo.repository.PostRepository;
 import cc.ryanc.halo.service.CategoryService;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,19 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private PostRepository postRepository;
+
     /**
      * 保存/修改分类目录
+     *
      * @param category 分类目录
      * @return Category
      */
     @Override
     @CacheEvict(value = {POSTS_CACHE_NAME, SUBCATES_CACHE_NAME}, allEntries = true, beforeInvocation = true)
     public Category save(Category category) {
-        if(category.getCatePid() == null){
+        if (category.getCatePid() == null) {
             category.setCatePid(0L);
         }
         return categoryRepository.save(category);
@@ -47,6 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 根据编号移除分类目录
+     *
      * @param cateId 分类目录编号
      * @return Category
      */
@@ -66,6 +72,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Long> findCateIdByCatePid(Long pId) {
+        return categoryRepository.findCateIdByCatePid(pId);
+    }
+
+    @Override
+    public int countSubPostsByCateIds(List<Long> cateIds) {
+        return categoryRepository.countSubPostsByCateIds(cateIds);
     }
 
     /**
@@ -123,7 +139,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Cacheable(value = SUBCATES_CACHE_NAME)
-    public List<Category> findAllByCatePid(int catePid) {
+    public List<Category> findAllByCatePid(long catePid) {
         List<Category> categoryList = categoryRepository.findAllByCatePid(catePid);
         categoryList = categoryList.stream().map(cate -> {
             Category cateTo = (Category) cate;
@@ -150,10 +166,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 查找cateId在关联表中关联的postId的集合（包括当前cateId的子类）
-     * @author ZhangHui
-     * @date 2019/12/23
+     *
      * @param cateId
      * @return long[]
+     * @author ZhangHui
+     * @date 2019/12/23
      */
     @Override
     public long[] findReferPost(long cateId) {
@@ -168,17 +185,17 @@ public class CategoryServiceImpl implements CategoryService {
         });
 
         Iterator<Long> iterator = referSet.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             Long referCateId = iterator.next();
             long[] referPostIds = categoryRepository.findReferPost(referCateId);
-            if(referPostIds.length > 0){
-                for(int i = 0; i < referPostIds.length; i++){
+            if (referPostIds.length > 0) {
+                for (int i = 0; i < referPostIds.length; i++) {
                     resultList.add(referPostIds[i]);
                 }
             }
         }
 
-        if(!resultList.isEmpty()) {
+        if (!resultList.isEmpty()) {
             Long[] result = resultList.toArray(new Long[resultList.size()]);
             return toSwapLongArray(result);
         }
@@ -188,10 +205,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 根据cateId查找所有子分类
-     * @author ZhangHui
-     * @date 2019/12/23
+     *
      * @param cateId
      * @return java.util.List<cc.ryanc.halo.model.domain.Category>
+     * @author ZhangHui
+     * @date 2019/12/23
      */
     @Override
     public List<Category> findChildCatesById(long cateId) {
@@ -205,7 +223,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public String convertToTreeMap(List<Category> categoryList) {
-        if(categoryList.isEmpty()){
+        if (categoryList.isEmpty()) {
             return null;
         }
         List<Map<String, Object>> cateList = new ArrayList<>();
@@ -215,7 +233,7 @@ public class CategoryServiceImpl implements CategoryService {
             cateTreeMap.put("id", category.getCateId());
             cateTreeMap.put("name", category.getCateName());
             cateTreeMap.put("pId", category.getCatePid());
-            cateTreeMap.put("icon",category.getCateIcon());
+            cateTreeMap.put("icon", category.getCateIcon());
             cateTreeMap.put("open", false);
             cateList.add(cateTreeMap);
         }
@@ -225,17 +243,18 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 递归获取集合cateids中的所有子类节点，放到resutSet中
-     * @author ZhangHui
-     * @date 2019/12/10
+     *
      * @param referSet
      * @param currentRefer
      * @return void
+     * @author ZhangHui
+     * @date 2019/12/10
      */
-    private void getChildCates(Set<Category> referSet, List<Category> currentRefer){
-        if(currentRefer.size() > 0) {
-            for(int i =0, length = currentRefer.size(); i < length; i++){
+    private void getChildCates(Set<Category> referSet, List<Category> currentRefer) {
+        if (currentRefer.size() > 0) {
+            for (int i = 0, length = currentRefer.size(); i < length; i++) {
                 referSet.add(currentRefer.get(i));
-                List<Category>  nextRefer = categoryRepository.findAllByCatePid(currentRefer.get(i).getCateId());
+                List<Category> nextRefer = categoryRepository.findAllByCatePid(currentRefer.get(i).getCateId());
                 getChildCates(referSet, nextRefer);
             }
         }
@@ -243,14 +262,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 包装类数组转换成基本类型数组
-     * @author ZhangHui
-     * @date 2019/12/10
+     *
      * @param array
      * @return long[]
+     * @author ZhangHui
+     * @date 2019/12/10
      */
-    private long[] toSwapLongArray(Long[] array){
+    private long[] toSwapLongArray(Long[] array) {
         long[] swapArray = new long[array.length];
-        for(int i = 0; i < array.length; i++){
+        for (int i = 0; i < array.length; i++) {
             swapArray[i] = array[i];
         }
         return swapArray;

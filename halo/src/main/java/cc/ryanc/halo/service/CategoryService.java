@@ -40,6 +40,15 @@ public interface CategoryService {
     List<Category> findAll();
 
     /**
+     * 根据父级id 查询 所有子文章
+     *
+     * @param pId
+     * @return
+     */
+    List<Long> findCateIdByCatePid(Long pId);
+
+    int countSubPostsByCateIds(List<Long> cateIds);
+    /**
      * 根据编号查询单个分类
      *
      * @param cateId 分类编号
@@ -73,55 +82,61 @@ public interface CategoryService {
 
     /**
      * 根据父节点id查找子类
-     * @author ZhangHui
-     * @date 2019/12/5
+     *
      * @param catePid
      * @return java.util.List<cc.ryanc.halo.model.domain.Category>
+     * @author ZhangHui
+     * @date 2019/12/5
      */
-    List<Category> findAllByCatePid(int catePid);
+    List<Category> findAllByCatePid(long catePid);
 
     /**
      * 修改原cateId下的直接子节点
-     * @author ZhangHui
-     * @date 2019/12/9
+     *
      * @param cateId
      * @return void
+     * @author ZhangHui
+     * @date 2019/12/9
      */
     void updateAfterRemove(long cateId);
 
     /**
      * 删除cateId关联的数据
-     * @author ZhangHui
-     * @date 2019/12/9
+     *
      * @param cateId
      * @return void
+     * @author ZhangHui
+     * @date 2019/12/9
      */
     void deleteReferPost(long cateId);
 
     /**
      * 根据cateId查找所有子分类
-     * @author ZhangHui
-     * @date 2019/12/23
+     *
      * @param cateId
      * @return java.util.List<cc.ryanc.halo.model.domain.Category>
+     * @author ZhangHui
+     * @date 2019/12/23
      */
     List<Category> findChildCatesById(long cateId);
 
     /**
      * 查找cateId在关联表中关联的postId的集合（包括当前cateId的子类）
-     * @author ZhangHui
-     * @date 2019/12/10
+     *
      * @param cateId
      * @return int[]
+     * @author ZhangHui
+     * @date 2019/12/10
      */
     long[] findReferPost(long cateId);
 
     /**
      * 将categoryList转换成zTree所需要的数据
+     *
+     * @param categoryList
+     * @return java.util.List<java.util.Map < java.lang.String, java.lang.Object>>
      * @author ZhangHui
      * @date 2019/12/24
-     * @param categoryList
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      */
     String convertToTreeMap(List<Category> categoryList);
 }

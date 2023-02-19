@@ -55,40 +55,40 @@ public class FrontTagController extends BaseController {
      * @param model  model
      * @return String
      */
-    @GetMapping(value = "{tagUrl}")
-    public String tags(Model model,
-                       @PathVariable("tagUrl") String tagUrl) {
-        return this.tags(model, tagUrl, 1);
-    }
+//    @GetMapping(value = "{tagUrl}")
+//    public String tags(Model model,
+//                       @PathVariable("tagUrl") String tagUrl) {
+//        return this.tags(model, tagUrl, 1);
+//    }
 
-    /**
-     * 根据标签路径查询所有文章 分页
-     *
-     * @param model  model
-     * @param tagUrl 标签路径
-     * @param page   页码
-     * @return String
-     */
-    @GetMapping(value = "{tagUrl}/page/{page}")
-    public String tags(Model model,
-                       @PathVariable("tagUrl") String tagUrl,
-                       @PathVariable("page") Integer page) {
-        Tag tag = tagService.findByTagUrl(tagUrl);
-        if(null==tag){
-            return this.renderNotFound();
-        }
-        Sort sort = new Sort(Sort.Direction.DESC, "postDate");
-        Integer size = 10;
-        if (StrUtil.isNotBlank(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()))) {
-            size = Integer.parseInt(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()));
-        }
-        Pageable pageable = PageRequest.of(page - 1, size, sort);
-        Page<Post> posts = postService.findPostsByTags(tag, pageable);
-        int[] rainbow = PageUtil.rainbow(page, posts.getTotalPages(), 3);
-        model.addAttribute("is_tags",true);
-        model.addAttribute("posts", posts);
-        model.addAttribute("rainbow", rainbow);
-        model.addAttribute("tag", tag);
-        return this.render("tag");
-    }
+//    /**
+//     * 根据标签路径查询所有文章 分页
+//     *
+//     * @param model  model
+//     * @param tagUrl 标签路径
+//     * @param page   页码
+//     * @return String
+//     */
+//    @GetMapping(value = "{tagUrl}/page/{page}")
+//    public String tags(Model model,
+//                       @PathVariable("tagUrl") String tagUrl,
+//                       @PathVariable("page") Integer page) {
+//        Tag tag = tagService.findByTagUrl(tagUrl);
+//        if(null==tag){
+//            return this.renderNotFound();
+//        }
+//        Sort sort = new Sort(Sort.Direction.DESC, "postDate");
+//        Integer size = 10;
+//        if (StrUtil.isNotBlank(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()))) {
+//            size = Integer.parseInt(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()));
+//        }
+//        Pageable pageable = PageRequest.of(page - 1, size, sort);
+//        Page<Post> posts = postService.findPostsByTags(tag, pageable);
+//        int[] rainbow = PageUtil.rainbow(page, posts.getTotalPages(), 3);
+//        model.addAttribute("is_tags",true);
+//        model.addAttribute("posts", posts);
+//        model.addAttribute("rainbow", rainbow);
+//        model.addAttribute("tag", tag);
+//        return this.render("tag");
+//    }
 }

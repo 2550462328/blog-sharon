@@ -4,6 +4,7 @@ import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
 import cc.ryanc.halo.model.dto.HaloConst;
 import cc.ryanc.halo.model.enums.BlogPropertiesEnum;
+import cc.ryanc.halo.model.enums.PostWrapTypeEnum;
 import cc.ryanc.halo.service.CategoryService;
 import cc.ryanc.halo.service.GalleryService;
 import cc.ryanc.halo.service.PostService;
@@ -102,7 +103,7 @@ public class FrontIndexController extends BaseController {
         //关键字查询
         }else if(keyword != null){
             if(!posts.getContent().isEmpty()) {
-                model.addAttribute("postlist", postService.wrapPostSummary(posts.getContent(), keyword));
+                model.addAttribute("postlist", postService.wrapPostSummary(posts.getContent(), keyword,60, PostWrapTypeEnum.H5));
             }else{
                 model.addAttribute("postlist", posts.getContent());
             }

@@ -15,6 +15,7 @@ import sun.awt.SunHints;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -36,13 +37,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * 更新文章阅读数
+     *
      * @param postId
      * @return
      */
     @Modifying
     @Transactional
-    @Query(value = "update halo_post set post_views=:postViews where user_id=:postId",nativeQuery = true)
-    int updateView(@Param("postViews")Long postViews,@Param("postId") Long postId);
+    @Query(value = "update halo_post set post_views=:postViews where user_id=:postId", nativeQuery = true)
+    int updateView(@Param("postViews") Long postViews, @Param("postId") Long postId);
+
     /**
      * 查询所有文章 根据文章类型
      *
@@ -62,6 +65,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * 模糊查询
+     *
      * @param pageable pageable
      * @return List
      */
@@ -69,6 +73,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * 根据文章的状态查询 分页
+     *
      * @param status   0，1，2
      * @param postType post or page
      * @param pageable 分页信息
@@ -78,6 +83,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * 根据文章的状态和分类id查询 分页
+     *
      * @param status   0，1，2
      * @param postType post or page
      * @param pageable 分页信息
@@ -197,7 +203,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @param pageable pageable
      * @return Page
      */
-    Page<Post> findPostsByTagsAndPostStatus(Tag tag, Integer status, Pageable pageable);
+//    Page<Post> findPostsByTagsAndPostStatus(Tag tag, Integer status, Pageable pageable);
 
     /**
      * 根据标签查询文章
@@ -205,7 +211,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @param tag tag
      * @return List
      */
-    List<Post> findPostsByTags(Tag tag);
+//    List<Post> findPostsByTags(Tag tag);
 
     /**
      * 模糊查询文章
@@ -241,4 +247,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @return 文章数量
      */
     Integer countAllByPostStatusAndPostType(Integer status, String postType);
+
+    @Query(value = "select hp.post_id,post_date,post_title,post_url,post_views,post_thumbnail,post_summary from halo_post hp inner join halo_posts_categories hpc on hp.post_id = hpc.post_id where hpc.cate_id = :cateId and hp.post_status = 0", countQuery = "select count(*) from halo_post hp inner join halo_posts_categories hpc on hp.post_id = hpc.post_id where hpc.cate_id = :cateId and hp.post_status = 0", nativeQuery = true)
+    Page<Map<String, Object>> findPostsByCateId(@Param("cateId") Long cateId,Pageable pageable);
 }

@@ -23,9 +23,9 @@ import java.util.List;
  * @author : RYAN0UP
  * @date : 2017/11/30
  */
-@Data
 @Entity
 @Table(name = "halo_category")
+@ToString(of = {"cateId","cateName"})
 public class Category implements Serializable, Comparable {
 
     private static final long serialVersionUID = 8383678847517271505L;
@@ -71,7 +71,72 @@ public class Category implements Serializable, Comparable {
     @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
+    @Transient
     private List<Post> posts = new ArrayList<>();
+
+    public Long getCateId() {
+        return cateId;
+    }
+
+    public void setCateId(Long cateId) {
+        this.cateId = cateId;
+    }
+
+    public Long getCatePid() {
+        return catePid;
+    }
+
+    public void setCatePid(Long catePid) {
+        this.catePid = catePid;
+    }
+
+    public String getCateName() {
+        return cateName;
+    }
+
+    public void setCateName(String cateName) {
+        this.cateName = cateName;
+    }
+
+    public String getCateUrl() {
+        return cateUrl;
+    }
+
+    public void setCateUrl(String cateUrl) {
+        this.cateUrl = cateUrl;
+    }
+
+    public String getCateIcon() {
+        return cateIcon;
+    }
+
+    public void setCateIcon(String cateIcon) {
+        this.cateIcon = cateIcon;
+    }
+
+    public String getCateDesc() {
+        return cateDesc;
+    }
+
+    public void setCateDesc(String cateDesc) {
+        this.cateDesc = cateDesc;
+    }
+
+    public Boolean getHasChild() {
+        return hasChild;
+    }
+
+    public void setHasChild(Boolean hasChild) {
+        this.hasChild = hasChild;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
     @Override
     public int compareTo(Object o) {

@@ -4,12 +4,15 @@ import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
 import cc.ryanc.halo.model.domain.Tag;
 import cc.ryanc.halo.model.dto.Archive;
+import cc.ryanc.halo.model.enums.PostWrapTypeEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -213,7 +216,7 @@ public interface PostService {
      * @param pageable pageable
      * @return Page
      */
-    Page<Post> findPostsByTags(Tag tag, Pageable pageable);
+//    Page<Post> findPostsByTags(Tag tag, Pageable pageable);
 
     /**
      * 搜索文章
@@ -237,7 +240,7 @@ public interface PostService {
      * @param post post
      * @return List
      */
-    List<Post> relatedPosts(Post post);
+//    List<Post> relatedPosts(Post post);
 
     /**
      * 获取所有文章的阅读量
@@ -294,5 +297,13 @@ public interface PostService {
      * @param
      * @return java.util.List<cc.ryanc.halo.model.domain.Post>
      */
-    List<Post> wrapPostSummary(List<Post> postList, String keyword);
+    List<Post> wrapPostSummary(List<Post> postList, String keyword, int splitLength, PostWrapTypeEnum postWrapTypeEnum);
+
+    /**
+     * 通过分类 id 获取简略文章信息
+     *
+     * @param cateId
+     * @return
+     */
+    Page<Map<String,Object>> findPostsByCateId(Pageable pageable, @Param("cateId") Long cateId);
 }

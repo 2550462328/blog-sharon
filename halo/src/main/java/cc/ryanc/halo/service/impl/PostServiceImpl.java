@@ -7,6 +7,7 @@ import cc.ryanc.halo.model.dto.Archive;
 import cc.ryanc.halo.model.dto.HaloConst;
 import cc.ryanc.halo.model.enums.PostStatusEnum;
 import cc.ryanc.halo.model.enums.PostTypeEnum;
+import cc.ryanc.halo.model.enums.PostWrapTypeEnum;
 import cc.ryanc.halo.repository.PostRepository;
 import cc.ryanc.halo.service.CategoryService;
 import cc.ryanc.halo.service.PostService;
@@ -54,6 +55,7 @@ public class PostServiceImpl implements PostService {
     private TagService tagService;
 
     private Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
+
     /**
      * 保存文章
      *
@@ -67,7 +69,7 @@ public class PostServiceImpl implements PostService {
         try {
             ElasticSearchUtils.savePost(postSaved);
         } catch (IOException e) {
-            logger.error("elastasic新增索引"+post.getPostId()+"出现IO异常 ",e);
+            logger.error("elastasic新增索引" + post.getPostId() + "出现IO异常 ", e);
         }
         return postSaved;
     }
@@ -99,13 +101,13 @@ public class PostServiceImpl implements PostService {
         Optional<Post> post = this.findByPostId(postId);
         post.get().setPostStatus(status);
         try {
-            if(status.equals(PostStatusEnum.RECYCLE.getCode()) || status.equals(PostStatusEnum.DRAFT.getCode())){
+            if (status.equals(PostStatusEnum.RECYCLE.getCode()) || status.equals(PostStatusEnum.DRAFT.getCode())) {
                 ElasticSearchUtils.deletePost(postId.toString());
-            }else if(status.equals(PostStatusEnum.PUBLISHED.getCode())){
+            } else if (status.equals(PostStatusEnum.PUBLISHED.getCode())) {
                 ElasticSearchUtils.savePost(post.get());
             }
         } catch (IOException e) {
-            logger.error("elastasic新增或删除索引"+ postId+"出现IO异常 ", e);
+            logger.error("elastasic新增或删除索引" + postId + "出现IO异常 ", e);
         }
         return postRepository.save(post.get());
     }
@@ -181,9 +183,9 @@ public class PostServiceImpl implements PostService {
             result = postRepository.findPostsByPostStatusAndPostTypeAndPostIdIsIn(PostStatusEnum.PUBLISHED.getCode(), PostTypeEnum.POST_TYPE_POST.getDesc(), postIds, pageable);
         } else if (StringUtils.hasText(keyword)) {
             try {
-                result = ElasticSearchUtils.getPost(keyword, pageable.getPageNumber(),pageable.getPageSize());
+                result = ElasticSearchUtils.getPost(keyword, pageable.getPageNumber(), pageable.getPageSize());
             } catch (IOException e) {
-                logger.error("elastasic搜索"+keyword+"出现IO异常 ",e);
+                logger.error("elastasic搜索" + keyword + "出现IO异常 ", e);
             }
         } else {
             result = postRepository.findPostsByPostStatusAndPostType(PostStatusEnum.PUBLISHED.getCode(), PostTypeEnum.POST_TYPE_POST.getDesc(), pageable);
@@ -193,19 +195,18 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 帮助inPost根据它里面的categories排序
+     *
      * @param inPage
      * @return org.springframework.data.domain.Page<cc.ryanc.halo.model.domain.Post>
      * @author ZhangHui
      * @date 2019/12/23
      */
     @Override
-    public  List<Post> sortPostByCate(Page<Post> inPage) {
+    public List<Post> sortPostByCate(Page<Post> inPage) {
         List<Post> postList = new ArrayList<>(inPage.getContent());
-        if(!postList.isEmpty() && postList.size() > 1) {
-            Collections.sort(postList,(p1,p2) ->{
-                    Category category1 = Collections.min(p1.getCategories());
-                    Category category2 = Collections.min(p2.getCategories());
-                    return category1.getCateId() > category2.getCateId() ? 1 : -1;
+        if (!postList.isEmpty() && postList.size() > 1) {
+            Collections.sort(postList, (p1, p2) -> {
+                return p1.getPostId() > p2.getPostId() ? 1 : -1;
             });
         }
         return postList;
@@ -387,19 +388,19 @@ public class PostServiceImpl implements PostService {
         return postRepository.findPostByCategoriesAndPostStatus(category, PostStatusEnum.PUBLISHED.getCode(), pageable);
     }
 
-    /**
-     * 根据标签查询文章，分页
-     *
-     * @param tag      tag
-     *                 //     * @param status   status
-     * @param pageable pageable
-     * @return Page
-     */
-    @Override
-    @CachePut(value = POSTS_CACHE_NAME, key = "'posts_tag_'+#tag.tagId+'_'+#pageable.pageNumber")
-    public Page<Post> findPostsByTags(Tag tag, Pageable pageable) {
-        return postRepository.findPostsByTagsAndPostStatus(tag, PostStatusEnum.PUBLISHED.getCode(), pageable);
-    }
+//    /**
+//     * 根据标签查询文章，分页
+//     *
+//     * @param tag      tag
+//     *                 //     * @param status   status
+//     * @param pageable pageable
+//     * @return Page
+//     */
+//    @Override
+//    @CachePut(value = POSTS_CACHE_NAME, key = "'posts_tag_'+#tag.tagId+'_'+#pageable.pageNumber")
+//    public Page<Post> findPostsByTags(Tag tag, Pageable pageable) {
+//        return postRepository.findPostsByTagsAndPostStatus(tag, PostStatusEnum.PUBLISHED.getCode(), pageable);
+//    }
 
     /**
      * 搜索文章
@@ -430,26 +431,26 @@ public class PostServiceImpl implements PostService {
      * @param post post
      * @return List
      */
-    @Override
-    @CachePut(value = POSTS_CACHE_NAME, key = "'posts_related_'+#post.getPostId()")
-    public List<Post> relatedPosts(Post post) {
-        //获取当前文章的所有标签
-        List<Tag> tags = post.getTags();
-        List<Post> tempPosts = new ArrayList<>();
-        for (Tag tag : tags) {
-            tempPosts.addAll(postRepository.findPostsByTags(tag));
-        }
-        //去掉当前的文章
-        tempPosts.remove(post);
-        //去掉重复的文章
-        List<Post> allPosts = new ArrayList<>();
-        for (int i = 0; i < tempPosts.size(); i++) {
-            if (!allPosts.contains(tempPosts.get(i))) {
-                allPosts.add(tempPosts.get(i));
-            }
-        }
-        return allPosts;
-    }
+//    @Override
+//    @CachePut(value = POSTS_CACHE_NAME, key = "'posts_related_'+#post.getPostId()")
+//    public List<Post> relatedPosts(Post post) {
+//        //获取当前文章的所有标签
+//        List<Tag> tags = post.getTags();
+//        List<Post> tempPosts = new ArrayList<>();
+//        for (Tag tag : tags) {
+//            tempPosts.addAll(postRepository.findPostsByTags(tag));
+//        }
+//        //去掉当前的文章
+//        tempPosts.remove(post);
+//        //去掉重复的文章
+//        List<Post> allPosts = new ArrayList<>();
+//        for (int i = 0; i < tempPosts.size(); i++) {
+//            if (!allPosts.contains(tempPosts.get(i))) {
+//                allPosts.add(tempPosts.get(i));
+//            }
+//        }
+//        return allPosts;
+//    }
 
     /**
      * 获取所有文章的阅读量
@@ -538,61 +539,68 @@ public class PostServiceImpl implements PostService {
 
     /**
      * 包装Post中得postSummary，让它关键词变黑
-     * @author ZhangHui
-     * @date 2019/12/26
+     *
      * @param
      * @return java.util.List<cc.ryanc.halo.model.domain.Post>
+     * @author ZhangHui
+     * @date 2019/12/26
      */
     @Override
-    public List<Post> wrapPostSummary(List<Post> postList, String keyword){
+    public List<Post> wrapPostSummary(List<Post> postList, String keyword, int splitLength, PostWrapTypeEnum postWrapTypeEnum) {
         List<Post> resultPost = new ArrayList<>();
         List<Post> notReferPost = new ArrayList<>();
 
-        for(Post post : postList){
+        for (Post post : postList) {
             String postContent = StrUtil.cleanBlank(HtmlUtil.cleanHtmlTag(post.getPostContent()));
-            if(postContent.indexOf(keyword) > -1){
+            if (postContent.indexOf(keyword) > -1) {
                 int index = postContent.indexOf(keyword);
-                post.setPostSummary(subPostContent(postContent,keyword,index));
+                post.setPostSummary(subPostContent(postContent, keyword, index, splitLength, postWrapTypeEnum));
                 resultPost.add(post);
-            }else{
+            } else {
                 notReferPost.add(post);
             }
         }
-        if(!notReferPost.isEmpty()){
+        if (!notReferPost.isEmpty()) {
             resultPost.addAll(notReferPost);
         }
         return resultPost;
     }
 
+    @Override
+    public Page<Map<String, Object>> findPostsByCateId(Pageable pageable, Long cateId) {
+        return postRepository.findPostsByCateId(cateId,pageable);
+    }
+
     /**
      * 切割postContent
+     *
+     * @return
      * @author ZhangHui
      * @date 2019/12/26
-     * @return
      */
-    private String subPostContent(String postContent,String keyword, int index){
+    private String subPostContent(String postContent, String keyword, int index, int splitLength, PostWrapTypeEnum postWrapTypeEnum) {
         StringBuilder sb = new StringBuilder();
         int len = postContent.length();
-        if(index < 60){
-            sb.append(postContent.substring(0,index));
-            if((len-index -1) >= (60 + 60 - index)){
-                sb.append(postContent.substring(index,120-index));
-            }else{
-                sb.append(postContent.substring(index,len - 1));
+        if (index < splitLength) {
+            sb.append(postContent.substring(0, index));
+            if ((len - index - 1) >= (splitLength * 2 - index)) {
+                sb.append(postContent.substring(index, splitLength * 2 - index));
+            } else {
+                sb.append(postContent.substring(index, len - 1));
             }
-        }else{
-            if(len-index-1 > 60){
-                sb.append(postContent.substring(index-59,index));
-                sb.append(postContent.substring(index,index+60));
-            }else{
-                if(index > 119){
-                    sb.append(postContent.substring(index-119,index));
-                }else{
-                    sb.append(postContent.substring(0,index));
+        } else {
+            if (len - index - 1 > splitLength) {
+                sb.append(postContent.substring(index - splitLength + 1, index));
+                sb.append(postContent.substring(index, index + splitLength));
+            } else {
+                if (index > splitLength * 2 - 1) {
+                    sb.append(postContent.substring(index - splitLength * 2 + 1, index));
+                } else {
+                    sb.append(postContent.substring(0, index));
                 }
-                sb.append(postContent.substring(index,len-1));
+                sb.append(postContent.substring(index, len - 1));
             }
         }
-        return sb.toString().replace(keyword,"<span style='font-size:18px;font-weight: bolder'>"+keyword+"</span>");
+        return sb.toString().replace(keyword, postWrapTypeEnum.getBeginTag() + keyword + postWrapTypeEnum.getEndTag());
     }
 }
