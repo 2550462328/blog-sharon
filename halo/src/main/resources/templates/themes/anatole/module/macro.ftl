@@ -130,10 +130,10 @@
         var chReg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
         var enReg = new RegExp("[a-zA-Z]+", "g");
         var keyword = $("#content").val();
-        if (!chReg.test(keyword) && !enReg.test(keyword)) {
+        if (keyword != '' && !chReg.test(keyword) && !enReg.test(keyword)) {
             layer.alert('输入正确的关键词！', {icon: 5});
         } else {
-            getPostContent(1, $("#content").val(), null);
+            getPostContent(1, keyword, null);
         }
     }
 
