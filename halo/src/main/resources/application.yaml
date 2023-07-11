@@ -13,9 +13,9 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://121.5.54.219:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
       username: root
-      password: root
+      password: yqqlmGSYCL222
   h2:
     console:
       settings:

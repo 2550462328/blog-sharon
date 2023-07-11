@@ -1,7 +1,7 @@
 <#include "module/macro.ftl">
 <@head title="${post.postTitle} · ${options.blog_title?default('Anatole')}" keywords="${post.postTitle},${options.seo_keywords?default('Anatole')},${tagWords}" description="${post.postSummary?if_exists}"></@head>
 <#include "module/sidebar.ftl">
-<img id="expandImg" isopen="false" src ="/static/halo-frontend/images/leftarrow.png" style="cursor:url('/static/halo-frontend/images/lefttip.ico'),w-resize; position: fixed; margin-left:23%;margin-top: 50vh;z-index: 999;width: 2%;height:55px;opacity: 0.5">
+<img id="expandImg" isopen="false" src ="/static/halo-frontend/images/leftarrow.png" style="cursor:url('/static/halo-frontend/images/click.ico'),w-resize; position: fixed; margin-left:23%;margin-top: 50vh;z-index: 999;width: 2%;height:55px;opacity: 0.5">
 <div class="main">
     <link href="./source/plugins/prism/prism.css" type="text/css" rel="stylesheet" />
     <style>

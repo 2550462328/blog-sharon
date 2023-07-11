@@ -17,17 +17,12 @@
     </div>
     <div class="logo-title">
         <div class="title">
-            <img id="coverimg" style="width:80%;height:230px;margin:0 auto;"/>
-            <img id="prevPic" onclick="changeCover('prev')" style="position:absolute;transform: scaleX(-1); left: 0;top:50%;width: 16px;height: 30px;cursor:url('/static/halo-frontend/images/lefttip.ico'),w-resize;" src="/anatole/source/images/arrow.png">
-            <img id="nextPic" onclick="changeCover('next')" style="position:absolute;right: 0;top:50%;width: 16px;height: 30px; cursor:url('/static/halo-frontend/images/righttip.ico'),e-resize;" src="/anatole/source/images/arrow.png">
+            <img id="coverimg" style="width:80%;height:210px;margin:10px auto;"/>
+            <img id="prevPic" onclick="changeCover('prev')" style="position:absolute;transform: scaleX(-1); left: 0;top:50%;width: 16px;height: 30px;cursor:url('/static/halo-frontend/images/click.ico'),w-resize;" src="/anatole/source/images/arrow.png">
+            <img id="nextPic" onclick="changeCover('next')" style="position:absolute;right: 0;top:50%;width: 16px;height: 30px; cursor:url('/static/halo-frontend/images/click.ico'),e-resize;" src="/anatole/source/images/arrow.png">
         </div>
-        <div class="description" style="margin-top:10px;">
-            <#if options.anatole_style_hitokoto?default("false")=="true">
-                <p id="yiyan">获取中...</p>
-            <#else >
-                <i style="float:left; margin-left: 10%;">${user.userDesc?default("A other Halo theme")}</i><br>
-                <i style="float:right;margin-right:10%;">--By Myself</i>
-            </#if>
+        <div class="description" style="margin-top:35px;font-size: 18px;">
+            <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19024261号-1</a>
         </div>
     </div>
 </div>

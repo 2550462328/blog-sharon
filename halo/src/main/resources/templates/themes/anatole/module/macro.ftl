@@ -210,7 +210,7 @@
                 $("#expandImg").attr("isopen", "true");
                 $("#expandImg").attr("src", "/static/halo-frontend/images/rightarrow.png");
                 $("#expandImg").css("margin-left", 0);
-                $("#expandImg").css("cursor", "url('/static/halo-frontend/images/righttip.ico'),e-resize");
+                $("#expandImg").css("cursor", "url('/static/halo-frontend/images/click.ico'),e-resize");
 
             } else {
                 $("#sidebar").width("25%");
@@ -220,7 +220,7 @@
                 $("#expandImg").attr("isopen", "false");
                 $("#expandImg").attr("src", "/static/halo-frontend/images/leftarrow.png");
                 $("#expandImg").css("margin-left", $("#sidebar").width() - $("#expandImg").width());
-                $("#expandImg").css("cursor", "url('/static/halo-frontend/images/lefttip.ico'),w-resize");
+                $("#expandImg").css("cursor", "url('/static/halo-frontend/images/click.ico'),w-resize");
             }
         });
 
