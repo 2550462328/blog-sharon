@@ -21,8 +21,9 @@
             <img id="prevPic" onclick="changeCover('prev')" style="position:absolute;transform: scaleX(-1); left: 0;top:50%;width: 16px;height: 30px;cursor:url('/static/halo-frontend/images/click.ico'),w-resize;" src="/anatole/source/images/arrow.png">
             <img id="nextPic" onclick="changeCover('next')" style="position:absolute;right: 0;top:50%;width: 16px;height: 30px; cursor:url('/static/halo-frontend/images/click.ico'),e-resize;" src="/anatole/source/images/arrow.png">
         </div>
-        <div class="description" style="margin-top:35px;font-size: 18px;">
-            <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19024261号-1</a>
+        <div style="width:300px;margin:10px auto; padding:20px 0;">
+            <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34012302001212" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="/static/halo-frontend/images/beian.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">皖公网安备 34012302001212号</p></a>
+            <a href="https://beian.miit.gov.cn/" target="_blank" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">皖ICP备19024261号-1</a>
         </div>
     </div>
 </div>
