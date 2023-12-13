@@ -12,18 +12,16 @@
 
 ------------------------------
 
-
 ## 简介
 
 **Halo** [ˈheɪloʊ]，意为光环。当然，你也可以当成拼音读(哈喽)。
 
 轻快，简洁，功能强大，使用 Java 开发的博客系统。
 
-
-
 ## 快速开始
 
 源码部署：
+
 ```bash
 进入pom目录  cd halo # 
 
@@ -35,16 +33,13 @@
 nohup java -Xms256m -Xmx256m -jar halo-latest.jar  &
 ```
 
-
-
 > 注意：如使用 Idea，Eclipse 等IDE运行的话，需要安装Lombok插件，另外暂不支持JDK10，主题管理和主题上传会有问题。
 > 更多请参考[ Halo 使用文档 ](https://halo-doc.ryanc.cc/installation/)或者[ Wiki](https://github.com/ruibaby/halo/wiki)。
 
-
-
 ## 主题
 
-除了内置的 [Anatole](https://github.com/hi-caicai/farbox-theme-Anatole) 和 [Material](https://github.com/viosey/hexo-theme-material) ，还有下列主题没有集成在项目里，如有需要，请自行下载之后通过后台上传上去使用。
+除了内置的 [Anatole](https://github.com/hi-caicai/farbox-theme-Anatole)
+和 [Material](https://github.com/viosey/hexo-theme-material) ，还有下列主题没有集成在项目里，如有需要，请自行下载之后通过后台上传上去使用。
 
 - [Vno](https://github.com/ruibaby/vno-halo) - 来自Jekyll的一款主题，作者 [Wei Wang](https://onevcat.com/)。
 - [Hux](https://github.com/ruibaby/hux-halo) - 来自Jekyll的一款主题，作者 [Xuan Huang](https://huangxuan.me/)。
@@ -76,7 +71,8 @@ Halo 的诞生离不开下面这些项目：
 - [AdminLTE](https://github.com/almasaeed2010/AdminLTE)：基于 Bootstrap 的后台模板
 - [Bootstrap](https://github.com/twbs/bootstrap.git)：使用最广泛的前端 ui 框架
 - [Animate](https://github.com/daneden/animate.css.git)：非常好用的 css 动效库
-- [SimpleMDE - Markdown Editor](https://github.com/sparksuite/simplemde-markdown-editor)：简洁，功能够用，且轻量级的 Markdown 编辑器
+- [SimpleMDE - Markdown Editor](https://github.com/sparksuite/simplemde-markdown-editor)：简洁，功能够用，且轻量级的
+  Markdown 编辑器
 - [Bootstrap-FileInput](https://github.com/kartik-v/bootstrap-fileinput.git)：基于 Bootstrap 的文件上传组件
 - [Font-awesome](https://github.com/FortAwesome/Font-Awesome.git)：使用最广泛的字体图标库
 - [JQuery](https://github.com/jquery/jquery.git)：使用最广泛的 JavaScript 框架
@@ -84,7 +80,6 @@ Halo 的诞生离不开下面这些项目：
 - [JQuery-Toast](https://github.com/kamranahmedse/jquery-toast-plugin)：消息提示组件
 - [Pjax](https://github.com/defunkt/jquery-pjax.git)：pushState + ajax = pjax
 - [OwO](https://github.com/DIYgod/OwO)：前端表情库
-
 
 ## 界面展示
 

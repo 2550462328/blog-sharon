@@ -136,20 +136,20 @@ public class ApiMetaWeBlog {
         for (int i = 0; i < members.length(); i++) {
             final JSONObject member = members.getJSONObject(i);
             final String name = member.getString("name");
-            if("dateCreated".equals(name)){
+            if ("dateCreated".equals(name)) {
                 final String dateString = member.getJSONObject("value").getString("dateTime.iso8601");
                 Date date = DateUtil.parseDate(dateString);
                 ret.setPostDate(date);
-            }else if ("title".equals(name)){
+            } else if ("title".equals(name)) {
                 ret.setPostTitle(member.getJSONObject("value").getString("string"));
-            }else if("description".equals(name)){
+            } else if ("description".equals(name)) {
                 final String content = member.getJSONObject("value").optString("string");
                 ret.setPostContent(content);
                 ret.setPostContentMd(content);
-            }else if("categories".equals(name)){
+            } else if ("categories".equals(name)) {
                 final StrBuilder cateBuilder = new StrBuilder();
                 final JSONObject data = member.getJSONObject("value").getJSONObject("array").getJSONObject("data");
-                if(0==data.length()){
+                if (0 == data.length()) {
                     throw new Exception("At least one category");
                 }
             }

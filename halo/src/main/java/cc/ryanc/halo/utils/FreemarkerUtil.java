@@ -18,17 +18,22 @@ import java.util.Map;
  */
 public class FreemarkerUtil {
 
-    private FreemarkerUtil(){};
-   /**
-    * 通过指定的名字获取相应的模板
-    * @author ZhangHui
-    * @date 2019/6/4
-    * @param fileName
-    * @return freemarker.template.Template
-    */
-    public  static Template getTemplate( String filePath, String fileName) {
+    private FreemarkerUtil() {
+    }
+
+    ;
+
+    /**
+     * 通过指定的名字获取相应的模板
+     *
+     * @param fileName
+     * @return freemarker.template.Template
+     * @author ZhangHui
+     * @date 2019/6/4
+     */
+    public static Template getTemplate(String filePath, String fileName) {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
-        String templatePath = FreemarkerUtil.class.getResource("/").getPath()+"/templates" + filePath;
+        String templatePath = FreemarkerUtil.class.getResource("/").getPath() + "/templates" + filePath;
         try {
             cfg.setDirectoryForTemplateLoading(new File(templatePath));
             cfg.setDefaultEncoding("UTF-8");
@@ -45,6 +50,7 @@ public class FreemarkerUtil {
 
     /**
      * 通过指定的文件目录和文件名生成相应的文件
+     *
      * @param template
      * @param paramMap
      * @return java.lang.Boolean
@@ -53,7 +59,7 @@ public class FreemarkerUtil {
      */
     public static Boolean printToFile(Template template, File htmFile, Map<String, Object> paramMap) {
         boolean done = false;
-        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmFile), "UTF-8"));) {
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(htmFile), "UTF-8"));) {
             //输出模板和数据模型都对应的文件
             template.process(paramMap, writer);
             done = true;
@@ -69,7 +75,7 @@ public class FreemarkerUtil {
         File file = new File("E:\\htmFile\\test.htm");
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("userName", "张辉");
-        Template template = FreemarkerUtil.getTemplate("/test","hello.ftl");
+        Template template = FreemarkerUtil.getTemplate("/test", "hello.ftl");
         FreemarkerUtil.printToFile(template, file, paramMap);
         System.out.println("operate done！");
     }

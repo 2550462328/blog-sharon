@@ -3,7 +3,6 @@ package cc.ryanc.halo.config.freemarker;
 import freemarker.template.SimpleSequence;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -17,7 +16,7 @@ import java.util.List;
  * @description freemarker的自定义排序函数
  * @date 2019/6/6
  */
-public class SortInt implements TemplateMethodModelEx{
+public class SortInt implements TemplateMethodModelEx {
     @Override
     public Object exec(List list) throws TemplateModelException {
         //list中是参数列表

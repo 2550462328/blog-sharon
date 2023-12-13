@@ -228,7 +228,7 @@ public class FrontCommentController {
                     pageUrl.append(post.getPostUrl());
                     pageUrl.append("#comment-id-");
                     pageUrl.append(comment.getCommentId());
-                    map.put("pageUrl",  pageUrl.toString());
+                    map.put("pageUrl", pageUrl.toString());
                     map.put("blogTitle", HaloConst.OPTIONS.get(BlogPropertiesEnum.BLOG_TITLE.getProp()));
                     map.put("commentAuthor", lastComment.getCommentAuthor());
                     map.put("pageName", lastComment.getPost().getPostTitle());

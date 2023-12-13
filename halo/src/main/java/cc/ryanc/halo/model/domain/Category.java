@@ -1,13 +1,9 @@
 package cc.ryanc.halo.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyToOne;
-import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -25,7 +21,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "halo_category")
-@ToString(of = {"cateId","cateName"})
+@ToString(of = {"cateId", "cateName"})
 public class Category implements Serializable, Comparable {
 
     private static final long serialVersionUID = 8383678847517271505L;
@@ -38,8 +34,8 @@ public class Category implements Serializable, Comparable {
     private Long cateId;
 
     /**
-    上级分组Id
-    */
+     * 上级分组Id
+     */
     private Long catePid;
 
     /**
@@ -68,7 +64,7 @@ public class Category implements Serializable, Comparable {
     @Transient
     private Boolean hasChild;
 
-    @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
     @Transient

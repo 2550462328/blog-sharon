@@ -30,12 +30,13 @@ public class TimeUtils {
         return instant.atZone(zoneId).toLocalDateTime();
     }
 
-    public static Date localDateTimeToDate(LocalDateTime dateTime){
+    public static Date localDateTimeToDate(LocalDateTime dateTime) {
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = dateTime.atZone(zoneId);
         return Date.from(zdt.toInstant());
 
     }
+
     /**
      * 格式化LocalDateTime
      *

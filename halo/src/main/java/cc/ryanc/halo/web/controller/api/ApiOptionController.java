@@ -29,8 +29,8 @@ public class ApiOptionController {
      * 获取所有设置选项
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",
@@ -71,8 +71,8 @@ public class ApiOptionController {
      * 获取单个设置项
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",

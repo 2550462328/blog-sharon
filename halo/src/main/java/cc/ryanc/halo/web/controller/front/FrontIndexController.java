@@ -11,7 +11,6 @@ import cc.ryanc.halo.service.PostService;
 import cc.ryanc.halo.web.controller.core.BaseController;
 import cn.hutool.core.util.PageUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +24,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <pre>
@@ -98,17 +100,17 @@ public class FrontIndexController extends BaseController {
         model.addAttribute("cateId", cateId);
 
         //分类查询
-        if(cateId != null){
+        if (cateId != null) {
             model.addAttribute("postlist", postService.sortPostByCate(posts));
-        //关键字查询
-        }else if(keyword != null){
-            if(!posts.getContent().isEmpty()) {
-                model.addAttribute("postlist", postService.wrapPostSummary(posts.getContent(), keyword,60, PostWrapTypeEnum.H5));
-            }else{
+            //关键字查询
+        } else if (keyword != null) {
+            if (!posts.getContent().isEmpty()) {
+                model.addAttribute("postlist", postService.wrapPostSummary(posts.getContent(), keyword, 60, PostWrapTypeEnum.H5));
+            } else {
                 model.addAttribute("postlist", posts.getContent());
             }
-        //默认
-        }else {
+            //默认
+        } else {
             model.addAttribute("postlist", posts.getContent());
         }
         return this.render("module/post_entry");

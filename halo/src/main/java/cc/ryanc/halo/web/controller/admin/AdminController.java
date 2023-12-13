@@ -109,7 +109,7 @@ public class AdminController extends BaseController {
         //成立天数
         Date blogStart = DateUtil.parse(HaloConst.OPTIONS.get(BlogPropertiesEnum.BLOG_START.getProp()));
         long hadDays = DateUtil.between(blogStart, DateUtil.date(), DateUnit.DAY);
-        model.addAttribute("hadDays",hadDays);
+        model.addAttribute("hadDays", hadDays);
         return "admin/admin_index";
     }
 

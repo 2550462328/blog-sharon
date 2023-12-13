@@ -3,7 +3,6 @@ package cc.ryanc.halo.service;
 import cc.ryanc.halo.model.domain.Category;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -48,6 +47,7 @@ public interface CategoryService {
     List<Long> findCateIdByCatePid(Long pId);
 
     int countSubPostsByCateIds(List<Long> cateIds);
+
     /**
      * 根据编号查询单个分类
      *

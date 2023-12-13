@@ -5,7 +5,6 @@ import cc.ryanc.halo.model.dto.JsonResult;
 import cc.ryanc.halo.model.enums.ResultCodeEnum;
 import cc.ryanc.halo.service.CategoryService;
 import cc.ryanc.halo.utils.LocaleMessageUtil;
-import freemarker.template.utility.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * <pre>
@@ -40,8 +37,10 @@ public class CategoryController {
     private final static int DEFAULT_PARENT = 0;
 
     private final static String DEFAULT_PARENTName = "请选择上级分类名称";
+
     /**
      * 查询所有分类并渲染category页面
+     *
      * @return 模板路径admin/admin_category
      */
     @GetMapping
@@ -53,14 +52,15 @@ public class CategoryController {
 
     /**
      * 获取子目录节点
-     * @author ZhangHui
-     * @date 2019/12/5
+     *
      * @param catePid
      * @return java.lang.String
+     * @author ZhangHui
+     * @date 2019/12/5
      */
     @GetMapping("/getSub")
     @ResponseBody
-    public JsonResult getSubCate(@RequestParam(value="catepId",defaultValue = "0")int catePid) {
+    public JsonResult getSubCate(@RequestParam(value = "catepId", defaultValue = "0") int catePid) {
         List<Category> categoryList = categoryService.findAllByCatePid(catePid);
         return new JsonResult(ResultCodeEnum.SUCCESS.getCode(), categoryList);
     }
@@ -129,9 +129,9 @@ public class CategoryController {
         model.addAttribute("updateCategory", category.get());
 
         long catePid = category.get().getCatePid();
-        if(catePid == 0){
+        if (catePid == 0) {
             model.addAttribute("pCateName", DEFAULT_PARENTName);
-        }else{
+        } else {
             model.addAttribute("pCateName", categoryService.findByCateId(catePid).get().getCateName());
         }
         Optional<Category> pCategory = categoryService.findByCateId(cateId);

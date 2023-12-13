@@ -36,7 +36,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <pre>
@@ -68,6 +70,7 @@ public class PostController extends BaseController {
 
     /**
      * 去除html，htm后缀，以及将空格替换成-
+     *
      * @param url url
      * @return String
      */
@@ -83,6 +86,7 @@ public class PostController extends BaseController {
 
     /**
      * 处理后台获取文章列表的请求
+     *
      * @param model model
      * @param page  当前页码
      * @param size  每页显示的条数
@@ -129,18 +133,18 @@ public class PostController extends BaseController {
             Sort sort = new Sort(Sort.Direction.DESC, "postId");
             Pageable pageable = PageRequest.of(page, size, sort);
 
-            if(search_category != null || StringUtils.hasText(keyword)){
+            if (search_category != null || StringUtils.hasText(keyword)) {
                 long[] postIds = new long[]{};
-                if(search_category != null){
+                if (search_category != null) {
                     postIds = categoryService.findReferPost(search_category);
                 }
-                if(StringUtils.hasText(keyword)) {
+                if (StringUtils.hasText(keyword)) {
                     model.addAttribute("posts", postService.searchPosts("%" + keyword + "%", postIds, status, pageable));
-                }else{
+                } else {
                     model.addAttribute("posts", postService.searchPosts("", postIds, status, pageable));
                 }
-            }else{
-                model.addAttribute("posts",postService.findPostByStatus(status, PostTypeEnum.POST_TYPE_POST.getDesc(), pageable));
+            } else {
+                model.addAttribute("posts", postService.findPostByStatus(status, PostTypeEnum.POST_TYPE_POST.getDesc(), pageable));
             }
             model.addAttribute("status", status);
             model.addAttribute("keyword", keyword);
@@ -158,6 +162,7 @@ public class PostController extends BaseController {
 
     /**
      * 处理预览文章的请求
+     *
      * @param postId 文章编号
      * @param model  model
      * @return 模板路径/themes/{theme}/post
@@ -171,6 +176,7 @@ public class PostController extends BaseController {
 
     /**
      * 处理跳转到新建文章页面
+     *
      * @return 模板路径admin/admin_editor
      */
     @GetMapping(value = "/write")
@@ -309,6 +315,7 @@ public class PostController extends BaseController {
 
     /**
      * 处理文章为发布的状态
+     *
      * @param postId 文章编号
      * @return 重定向到/admin/posts
      */

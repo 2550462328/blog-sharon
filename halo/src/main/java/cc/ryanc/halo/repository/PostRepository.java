@@ -2,8 +2,6 @@ package cc.ryanc.halo.repository;
 
 import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
-import cc.ryanc.halo.model.domain.Tag;
-import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +9,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import sun.awt.SunHints;
 
 import java.util.Date;
 import java.util.List;
@@ -249,5 +246,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Integer countAllByPostStatusAndPostType(Integer status, String postType);
 
     @Query(value = "select hp.post_id,post_date,post_title,post_url,post_views,post_thumbnail,post_summary from halo_post hp inner join halo_posts_categories hpc on hp.post_id = hpc.post_id where hpc.cate_id = :cateId and hp.post_status = 0", countQuery = "select count(*) from halo_post hp inner join halo_posts_categories hpc on hp.post_id = hpc.post_id where hpc.cate_id = :cateId and hp.post_status = 0", nativeQuery = true)
-    Page<Map<String, Object>> findPostsByCateId(@Param("cateId") Long cateId,Pageable pageable);
+    Page<Map<String, Object>> findPostsByCateId(@Param("cateId") Long cateId, Pageable pageable);
 }

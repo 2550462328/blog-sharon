@@ -6,13 +6,11 @@ import cc.ryanc.halo.model.dto.PageSearch;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HtmlUtil;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.http.HttpHost;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.common.settings.Settings;
@@ -26,7 +24,9 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,27 +42,26 @@ import java.util.concurrent.TimeUnit;
  * @description ElasticSearch工具类
  * @date 2019/12/24
  */
+@Service("elasticSearchUtils")
 public class ElasticSearchUtils {
+    
+    
+    @Value("${es.host:127.0.0.1}")
+    private String host;
+
+    @Value("${es.port:9200}")
+    private int port;
+
+    @Value("${es.userName:elastic}")
+    private String userName;
+
+    @Value("${es.password:4sE4uWIuTdJi9rd58oG3}")
+    private String password;
 
     private static final String INDEX_NAME = "post";
 
-    public static void main(String[] args) {
-        try {
-//            createIndex();
-//            savePost(new Post(1L, "测试", "这是一个测试的文档", "/test", "test文档", new Date(), null));
-//            savePost(new Post(2L,"测试", "这是一个测试的文档", "/test", "test文档", new Date(), null));
-//            savePost(new Post(3L,"测试", "这是一个测试的文档", "/test", "test文档", new Date(), null));
-            getPost("适配器", 0, 2);
-//            deletePost("1");
-//            deletePost("2");
-//            deletePost("3");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void createIndex() throws IOException {
-        RestHighLevelClient client = RestHighLevelClientFactory.instance();
+    public  void createIndex() throws IOException {
+        RestHighLevelClient client = RestHighLevelClientFactory.instance(host,port,userName,password);
         XContentBuilder builder = JsonXContent.contentBuilder()
                 .startObject();
         {
@@ -99,8 +98,8 @@ public class ElasticSearchUtils {
      * @author ZhangHui
      * @date 2019/12/24
      */
-    public static void savePost(Post post) throws IOException {
-        RestHighLevelClient client = RestHighLevelClientFactory.instance();
+    public  void savePost(Post post) throws IOException {
+        RestHighLevelClient client = RestHighLevelClientFactory.instance(host,port,userName,password);
         IndexRequest indexRequest = new IndexRequest(INDEX_NAME, "_doc", post.getPostId().toString());
         JSONObject obj = new JSONObject();
         obj.put("post-id", post.getPostId());
@@ -123,8 +122,8 @@ public class ElasticSearchUtils {
      * @author ZhangHui
      * @date 2019/12/24
      */
-    public static Page<Post> getPost(String keyword, int pagenum, int size) throws IOException {
-        RestHighLevelClient client = RestHighLevelClientFactory.instance();
+    public  Page<Post> getPost(String keyword, int pagenum, int size) throws IOException {
+        RestHighLevelClient client = RestHighLevelClientFactory.instance(host,port,userName,password);
         // 这个sourcebuilder就类似于查询语句中最外层的部分。包括查询分页的起始，
         // 查询语句的核心，查询结果的排序，查询结果截取部分返回等一系列配置
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
@@ -188,8 +187,8 @@ public class ElasticSearchUtils {
      * @author ZhangHui
      * @date 2019/12/24
      */
-    public static void deletePost(String postId) throws IOException {
-        RestHighLevelClient client = RestHighLevelClientFactory.instance();
+    public  void deletePost(String postId) throws IOException {
+        RestHighLevelClient client = RestHighLevelClientFactory.instance(host,port,userName,password);
         //指定要删除的索引名称
         DeleteRequest request = new DeleteRequest(INDEX_NAME, "_doc", postId);
         //设置超时，等待所有节点确认索引删除（使用TimeValue形式）
@@ -222,7 +221,7 @@ public class ElasticSearchUtils {
      * @author ZhangHui
      * @date 2019/12/25
      */
-    private static Page<Post> assemblePage(int pagenum, int size, SearchHits hits) {
+    private  Page<Post> assemblePage(int pagenum, int size, SearchHits hits) {
         PageSearch page = new PageSearch() {
             @Override
             public int getTotalPages() {

@@ -28,8 +28,8 @@ public class ApiPageController {
      * 获取单个页面
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",

@@ -46,22 +46,23 @@ public class MarkdownUtils {
      * @return String
      */
     public static String renderMarkdown(String content) {
-       return renderMarkdown(content,true);
+        return renderMarkdown(content, true);
     }
 
     /**
      * 解析content成html
-     * @author ZhangHui
-     * @date 2020/1/10
+     *
      * @param content
      * @param isParseB
      * @return java.lang.String
+     * @author ZhangHui
+     * @date 2020/1/10
      */
-    public static String renderMarkdown(String content, boolean isParseB){
+    public static String renderMarkdown(String content, boolean isParseB) {
         Node document = PARSER.parse(content);
         String postContent = RENDERER.render(document);
-        if(isParseB){
-            postContent = postContent.replaceAll("\\*\\[\\*","<b style='font-size:12.5px'>").replaceAll("\\*\\]\\*","</b>");
+        if (isParseB) {
+            postContent = postContent.replaceAll("\\*\\[\\*", "<b style='font-size:12.5px'>").replaceAll("\\*\\]\\*", "</b>");
         }
         return postContent;
     }

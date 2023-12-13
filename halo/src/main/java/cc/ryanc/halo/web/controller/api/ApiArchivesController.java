@@ -32,8 +32,8 @@ public class ApiArchivesController {
      * 根据年份归档
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",
@@ -86,8 +86,8 @@ public class ApiArchivesController {
      * 根据月份归档
      *
      * <p>
-     *     result json:
-     *     <pre>
+     * result json:
+     * <pre>
      * {
      *     "code": 200,
      *     "msg": "OK",

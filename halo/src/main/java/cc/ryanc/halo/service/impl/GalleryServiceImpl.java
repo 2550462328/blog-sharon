@@ -79,9 +79,10 @@ public class GalleryServiceImpl implements GalleryService {
 
     /**
      * 查询所有的图片地址
+     *
+     * @return java.util.List<cc.ryanc.halo.model.domain.Gallery>
      * @author ZhangHui
      * @date 2019/12/26
-     * @return java.util.List<cc.ryanc.halo.model.domain.Gallery>
      */
     @Override
     public List<String> findAllGalleryUrl() {

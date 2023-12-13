@@ -90,7 +90,7 @@ public class FrontCategoryController extends BaseController {
         Pageable pageable = PageRequest.of(page - 1, size, sort);
         Page<Post> posts = postService.findPostByCategories(category, pageable);
         int[] rainbow = PageUtil.rainbow(page, posts.getTotalPages(), 3);
-        model.addAttribute("is_categories",true);
+        model.addAttribute("is_categories", true);
         model.addAttribute("posts", posts);
         model.addAttribute("rainbow", rainbow);
         model.addAttribute("category", category);

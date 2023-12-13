@@ -20,20 +20,21 @@ import java.util.Map;
 public class RoleTagDirective implements TemplateDirectiveModel {
     /**
      * 功能描述
-     * @author ZhangHui
-     * @date 2019/6/6
-     * @param env 环境变量
-     * @param map 指令参数
-     * @param templateModels 循环变量
+     *
+     * @param env                   环境变量
+     * @param map                   指令参数
+     * @param templateModels        循环变量
      * @param templateDirectiveBody 指令内容
      * @return void
+     * @author ZhangHui
+     * @date 2019/6/6
      */
     @Override
     public void execute(Environment env, Map map, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         TemplateScalarModel user = (TemplateScalarModel) map.get("user");
         TemplateScalarModel role = (TemplateScalarModel) map.get("role");
 
-        if("zhanghui".equals(user.toString()) && "admin".equals(role.toString())){
+        if ("zhanghui".equals(user.toString()) && "admin".equals(role.toString())) {
             templateModels[0] = TemplateBooleanModel.TRUE;
         }
 

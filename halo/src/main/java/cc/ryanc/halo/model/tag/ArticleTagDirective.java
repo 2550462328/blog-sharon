@@ -29,13 +29,14 @@ public class ArticleTagDirective implements TemplateDirectiveModel {
 
     /**
      * 功能描述
-     * @author ZhangHui
-     * @date 2019/6/4
-     * @param environment 环境变量
-     * @param map 指令参数（存储你需要的值，key-value）
-     * @param templateModels 循环变量
+     *
+     * @param environment           环境变量
+     * @param map                   指令参数（存储你需要的值，key-value）
+     * @param templateModels        循环变量
      * @param templateDirectiveBody 指令内容
      * @return void
+     * @author ZhangHui
+     * @date 2019/6/4
      */
     @Override
     public void execute(Environment environment, Map map, TemplateModel[] templateModels, TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {

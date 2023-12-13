@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
   use-forward-headers: true
   undertow:
     io-threads: 2
@@ -9,22 +9,21 @@ server:
   servlet:
     session:
       timeout: 86400s
+es:
+  host: 127.0.0.1
+  port: 9200
+  userName: elastic
+  password: 4sE4uWIuTdJi9rd58oG3
 spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://121.5.54.219:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://127.0.0.1:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
       username: root
       password: yqqlmGSYCL222
-  h2:
-    console:
-      settings:
-        web-allow-others: true
-      path: /h2-console
-      enabled: true
   jpa:
-      ddl-auto: update
-#      show-sql: true
+    ddl-auto: update
+  #      show-sql: true
   freemarker:
     # 是否允许HttpServletRequest属性覆盖(隐藏)控制器生成的同名模型属性。
     allow-request-override: false

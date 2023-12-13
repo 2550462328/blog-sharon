@@ -7,9 +7,9 @@ import cc.ryanc.halo.model.dto.JsonResult;
 import cc.ryanc.halo.model.enums.BlogPropertiesEnum;
 import cc.ryanc.halo.model.enums.ResponseStatusEnum;
 import cc.ryanc.halo.service.CategoryService;
-import cn.hutool.json.JSONObject;
 import cc.ryanc.halo.service.PostService;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -68,7 +68,7 @@ public class ApiCategoryController {
      * @return JsonResult
      */
     @GetMapping("/list/{pId}/{pageNo}")
-    public JsonResult categories(@PathVariable("pId") Long pId,@PathVariable("pageNo") Integer pageNo) {
+    public JsonResult categories(@PathVariable("pId") Long pId, @PathVariable("pageNo") Integer pageNo) {
         if (pId == null) {
             pId = 0L;
         }
@@ -80,7 +80,7 @@ public class ApiCategoryController {
             size = Integer.parseInt(HaloConst.OPTIONS.get(BlogPropertiesEnum.INDEX_POSTS.getProp()));
         }
         //所有文章数据，分页
-        Pageable pageable = PageRequest.of(pageNo -1, size, sort);
+        Pageable pageable = PageRequest.of(pageNo - 1, size, sort);
 
         List<JSONObject> list = new ArrayList<>();
         List<Category> categories = categoryService.findAllByCatePid(pId);
@@ -97,7 +97,7 @@ public class ApiCategoryController {
             info.put("categories", i.getCateDesc());
             list.add(info);
         }
-        Page<Map<String,Object>> posts = postService.findPostsByCateId(pageable, pId);
+        Page<Map<String, Object>> posts = postService.findPostsByCateId(pageable, pId);
         JSONObject result = new JSONObject().put("posts", posts).put("result", list);
         return new JsonResult(ResponseStatusEnum.SUCCESS.getCode(), ResponseStatusEnum.SUCCESS.getMsg(), result);
     }

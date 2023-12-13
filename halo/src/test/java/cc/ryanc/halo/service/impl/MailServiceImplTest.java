@@ -1,20 +1,5 @@
 package cc.ryanc.halo.service.impl;
 
-import cc.ryanc.halo.service.MailService;
-import io.github.biezhi.ome.OhMyEmail;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-
-import javax.mail.MessagingException;
-import java.io.File;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import static org.junit.Assert.*;
-
 /**
  * @author : RYAN0UP
  * @version : 1.0

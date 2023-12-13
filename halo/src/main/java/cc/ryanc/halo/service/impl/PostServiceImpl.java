@@ -4,7 +4,6 @@ import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
 import cc.ryanc.halo.model.domain.Tag;
 import cc.ryanc.halo.model.dto.Archive;
-import cc.ryanc.halo.model.dto.HaloConst;
 import cc.ryanc.halo.model.enums.PostStatusEnum;
 import cc.ryanc.halo.model.enums.PostTypeEnum;
 import cc.ryanc.halo.model.enums.PostWrapTypeEnum;
@@ -27,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.*;
 
@@ -53,7 +53,10 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private TagService tagService;
-
+    
+    @Resource
+    private ElasticSearchUtils elasticSearchUtils;
+    
     private Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     /**
@@ -67,7 +70,7 @@ public class PostServiceImpl implements PostService {
     public Post save(Post post) {
         Post postSaved = postRepository.save(post);
         try {
-            ElasticSearchUtils.savePost(postSaved);
+            elasticSearchUtils.savePost(postSaved);
         } catch (IOException e) {
             logger.error("elastasic新增索引" + post.getPostId() + "出现IO异常 ", e);
         }
@@ -102,9 +105,9 @@ public class PostServiceImpl implements PostService {
         post.get().setPostStatus(status);
         try {
             if (status.equals(PostStatusEnum.RECYCLE.getCode()) || status.equals(PostStatusEnum.DRAFT.getCode())) {
-                ElasticSearchUtils.deletePost(postId.toString());
+                elasticSearchUtils.deletePost(postId.toString());
             } else if (status.equals(PostStatusEnum.PUBLISHED.getCode())) {
-                ElasticSearchUtils.savePost(post.get());
+                elasticSearchUtils.savePost(post.get());
             }
         } catch (IOException e) {
             logger.error("elastasic新增或删除索引" + postId + "出现IO异常 ", e);
@@ -183,7 +186,7 @@ public class PostServiceImpl implements PostService {
             result = postRepository.findPostsByPostStatusAndPostTypeAndPostIdIsIn(PostStatusEnum.PUBLISHED.getCode(), PostTypeEnum.POST_TYPE_POST.getDesc(), postIds, pageable);
         } else if (StringUtils.hasText(keyword)) {
             try {
-                result = ElasticSearchUtils.getPost(keyword, pageable.getPageNumber(), pageable.getPageSize());
+                result = elasticSearchUtils.getPost(keyword, pageable.getPageNumber(), pageable.getPageSize());
             } catch (IOException e) {
                 logger.error("elastasic搜索" + keyword + "出现IO异常 ", e);
             }
@@ -568,7 +571,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<Map<String, Object>> findPostsByCateId(Pageable pageable, Long cateId) {
-        return postRepository.findPostsByCateId(cateId,pageable);
+        return postRepository.findPostsByCateId(cateId, pageable);
     }
 
     /**

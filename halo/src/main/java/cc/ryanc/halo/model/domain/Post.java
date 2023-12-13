@@ -1,9 +1,6 @@
 package cc.ryanc.halo.model.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -22,7 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "halo_post")
-@ToString(of = {"postId","postTitle"})
+@ToString(of = {"postId", "postTitle"})
 public class Post implements Serializable {
 
     private static final long serialVersionUID = -6019684584665869629L;

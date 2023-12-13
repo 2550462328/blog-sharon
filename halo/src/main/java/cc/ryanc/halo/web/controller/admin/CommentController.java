@@ -71,7 +71,7 @@ public class CommentController extends BaseController {
                            @RequestParam(value = "size", defaultValue = "10") Integer size) {
         Sort sort = new Sort(Sort.Direction.DESC, "commentDate");
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Comment> comments = commentService.findAll(status,pageable);
+        Page<Comment> comments = commentService.findAll(status, pageable);
         model.addAttribute("comments", comments);
         model.addAttribute("publicCount", commentService.getCountByStatus(CommentStatusEnum.PUBLISHED.getCode()));
         model.addAttribute("checkCount", commentService.getCountByStatus(CommentStatusEnum.CHECKING.getCode()));
@@ -240,7 +240,7 @@ public class CommentController extends BaseController {
                     pageUrl.append("#comment-id-");
                     pageUrl.append(comment.getCommentId());
 
-                    map.put("pageUrl",pageUrl.toString());
+                    map.put("pageUrl", pageUrl.toString());
                     map.put("commentContent", lastComment.getCommentContent());
                     map.put("replyAuthor", user.getUserDisplayName());
                     map.put("replyContent", commentContent);
@@ -286,7 +286,7 @@ public class CommentController extends BaseController {
                         pageUrl.append("#comment-id-");
                         pageUrl.append(comment.getCommentId());
 
-                        map.put("pageUrl",pageUrl.toString());
+                        map.put("pageUrl", pageUrl.toString());
                         map.put("pageName", post.getPostTitle());
                         map.put("commentContent", comment.getCommentContent());
                         map.put("blogUrl", HaloConst.OPTIONS.get(BlogPropertiesEnum.BLOG_URL.getProp()));

@@ -2,7 +2,6 @@ package cc.ryanc.halo.service;
 
 import cc.ryanc.halo.model.domain.Category;
 import cc.ryanc.halo.model.domain.Post;
-import cc.ryanc.halo.model.domain.Tag;
 import cc.ryanc.halo.model.dto.Archive;
 import cc.ryanc.halo.model.enums.PostWrapTypeEnum;
 import org.springframework.data.domain.Page;
@@ -94,6 +93,7 @@ public interface PostService {
 
     /**
      * 帮助inPost根据它里面的categories排序
+     *
      * @param inPage
      * @return org.springframework.data.domain.Page<cc.ryanc.halo.model.domain.Post>
      * @author ZhangHui
@@ -292,10 +292,11 @@ public interface PostService {
 
     /**
      * 包装Post中得postSummary，让它关键词变黑
-     * @author ZhangHui
-     * @date 2019/12/26
+     *
      * @param
      * @return java.util.List<cc.ryanc.halo.model.domain.Post>
+     * @author ZhangHui
+     * @date 2019/12/26
      */
     List<Post> wrapPostSummary(List<Post> postList, String keyword, int splitLength, PostWrapTypeEnum postWrapTypeEnum);
 
@@ -305,5 +306,5 @@ public interface PostService {
      * @param cateId
      * @return
      */
-    Page<Map<String,Object>> findPostsByCateId(Pageable pageable, @Param("cateId") Long cateId);
+    Page<Map<String, Object>> findPostsByCateId(Pageable pageable, @Param("cateId") Long cateId);
 }
